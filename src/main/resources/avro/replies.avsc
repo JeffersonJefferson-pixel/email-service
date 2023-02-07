@@ -1,0 +1,44 @@
+[
+  {
+    "namespace": "com.camdigikey.emailservice",
+    "type": "record",
+    "name": "SendEmailReply",
+    "fields": [
+      {
+        "name": "sender",
+        "type": "string"
+      },
+      {
+        "name": "receiver",
+        "type": "string"
+      },
+      {
+        "name": "subject",
+        "type": "string"
+      }
+    ]
+  },
+  {
+    "namespace": "com.camdigikey.emailservice",
+    "type": "record",
+    "name": "GenericReply",
+    "fields": [
+      {
+        "name": "code",
+        "type": "int"
+      },
+      {
+        "name": "data",
+        "type": [
+          "null",
+          "com.camdigikey.emailservice.SendEmailReply"
+        ],
+        "default": null
+      },
+      {
+        "name": "message",
+        "type": "string"
+      }
+    ]
+  }
+]
