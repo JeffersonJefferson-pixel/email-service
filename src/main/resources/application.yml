@@ -14,7 +14,7 @@ kafka:
 
 logging:
   file:
-    name: /tmp/email-service.log
+    name: ./tmp/email-service.log
   pattern:
     file: '%d{yyyy-MM-dd HH:mm:ss} - %logger{36} - %msg traceID=%X{trace_id} %n'
   level:
@@ -32,7 +32,7 @@ server:
       rotate: false
       suffix: .log
       prefix: access-log
-      directory: /tmp
+      directory: ./tmp
       pattern: common
 
 management:
@@ -96,4 +96,8 @@ mail:
   provider: ${MAIL_PROVIDER:mailgun}
   from:
     name: ${MAIL_FROM_NAME:abc}
+
+retry:
+  maxAttempts: 3
+  retry.maxDelay: 100
 

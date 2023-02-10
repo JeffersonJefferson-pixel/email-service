@@ -2,12 +2,15 @@ package com.camdigikey.emailservice.kafka;
 
 import com.camdigikey.emailservice.dto.SendEmailResponseDto;
 import com.camdigikey.emailservice.exception.EmailException;
+import com.camdigikey.emailservice.model.SendEmailRequest;
+import com.camdigikey.emailservice.service.SendEmailRequestService;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.kafka.core.KafkaTemplate;
+import org.springframework.retry.support.RetryTemplate;
 import org.springframework.stereotype.Component;
 import org.springframework.messaging.handler.annotation.SendTo;
 
@@ -18,8 +21,6 @@ import com.camdigikey.emailservice.GenericReply;
 import com.camdigikey.emailservice.SendEmailMessage;
 import com.camdigikey.emailservice.SendEmailReply;
 
-import javax.mail.MessagingException;
-import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.concurrent.CountDownLatch;
@@ -27,17 +28,18 @@ import java.util.concurrent.CountDownLatch;
 @Component
 @Slf4j
 public class SendEmailConsumer {
-  private IEmailService emailSvc;
 
   private MapStructMapper mapper;
+
+  private SendEmailRequestService sendEmailReqSvc;
 
   @Getter
   private CountDownLatch latch;
 
   @Autowired
-  public SendEmailConsumer(IEmailService emailSvc, MapStructMapper mapper) {
-    this.emailSvc = emailSvc;
+  public SendEmailConsumer(MapStructMapper mapper, SendEmailRequestService sendEmailReqSvc) {
     this.mapper = mapper;
+    this.sendEmailReqSvc = sendEmailReqSvc;
     this.latch = new CountDownLatch(1);
   }
 
@@ -51,16 +53,18 @@ public class SendEmailConsumer {
     log.info("consuming send-email request");
     GenericReply reply;
 
-    SendEmailRequestDto request = mapper.sendEmailMsgToSendEmailReq(message);
+    SendEmailRequestDto requestDto = mapper.sendEmailMsgToSendEmailReq(message);
 
     SendEmailReply data = SendEmailReply.newBuilder()
-        .setSubject(request.getSubject())
-        .setSender(request.getSender())
-        .setReceiver(request.getReceiver())
+        .setSubject(requestDto.getSubject())
+        .setSender(requestDto.getSender())
+        .setReceiver(requestDto.getReceiver())
         .build();
 
     try {
-      emailSvc.sendEmail(request);
+      SendEmailRequest request = sendEmailReqSvc.saveRequest(requestDto);
+
+      sendEmailReqSvc.sendEmailWithRetry(request);
 
       reply = GenericReply.newBuilder()
           .setCode(0)

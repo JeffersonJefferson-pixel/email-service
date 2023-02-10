@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 
-import com.camdigikey.emailservice.dto.SendEmailRequestDto;
+import com.camdigikey.emailservice.model.SendEmailRequest;
 import com.camdigikey.emailservice.exception.EmailException;
 
 @Service
@@ -20,9 +20,8 @@ public class MailgunApiService extends AbstractEmailService {
 
   private MailgunConfig mailgunConfig;
 
-  public void sendEmail(final SendEmailRequestDto request) throws EmailException {
+  public void sendEmail(final SendEmailRequest request) throws EmailException {
     log.debug("Sending email via email with Mailgun API");
-
 
     try {
       HttpResponse<String> response = postRequest(request, request.getMessage());
@@ -38,7 +37,7 @@ public class MailgunApiService extends AbstractEmailService {
     }
   }
 
-  public HttpResponse<String> postRequest(final SendEmailRequestDto request, String htmlContent) throws UnirestException, IOException {
+  public HttpResponse<String> postRequest(final SendEmailRequest request, String htmlContent) throws UnirestException, IOException {
     return Unirest
         .post(mailgunConfig.getApiBaseUrl())
         .basicAuth("api", mailgunConfig.getApiKey())

@@ -6,7 +6,7 @@ import javax.mail.MessagingException;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
-import com.camdigikey.emailservice.dto.SendEmailRequestDto;
+import com.camdigikey.emailservice.model.SendEmailRequest;
 import com.camdigikey.emailservice.exception.EmailException;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -27,7 +27,7 @@ public class MailgunSmtpService extends AbstractEmailService {
   private JavaMailSender mailSender;
 
   @Override
-  public void sendEmail(final SendEmailRequestDto request) throws  EmailException {
+  public void sendEmail(final SendEmailRequest request) throws  EmailException {
     log.debug("Sending email via email with Mailgun");
 
     try {

@@ -1,6 +1,6 @@
 package com.camdigikey.emailservice.email;
 
-import com.camdigikey.emailservice.dto.SendEmailRequestDto;
+import com.camdigikey.emailservice.model.SendEmailRequest;
 import com.camdigikey.emailservice.exception.EmailException;
 
 import com.sendgrid.*;
@@ -19,7 +19,7 @@ public class SendgridService extends AbstractEmailService {
 
   private SendgridConfig sendgridConfig;
 
-  public void sendEmail(final SendEmailRequestDto request) throws EmailException {
+  public void sendEmail(final SendEmailRequest request) throws EmailException {
     log.debug("Sending email via email with Sendgrid");
 
     try {

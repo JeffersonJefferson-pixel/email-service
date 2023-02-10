@@ -6,10 +6,9 @@ import org.thymeleaf.TemplateEngine;
 
 public abstract class AbstractEmailService implements IEmailService {
 
-  @Autowired
-  protected MessageSource messages;
-
-  @Autowired
-  protected TemplateEngine htmlTemplateEngine;
-
+//  @Autowired
+//  protected MessageSource messages;
+//
+//  @Autowired
+//  protected TemplateEngine htmlTemplateEngine;
 }
