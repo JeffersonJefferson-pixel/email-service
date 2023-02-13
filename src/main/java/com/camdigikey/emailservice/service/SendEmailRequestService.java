@@ -40,7 +40,7 @@ public class SendEmailRequestService {
       } catch (EmailException e) {
         throw e;
       } finally {
-        incrementNumTries(request);
+        incrementNumAttempts(request);
       }
       return null;
     });
@@ -56,13 +56,13 @@ public class SendEmailRequestService {
         .subject(requestDto.getSubject())
         .message(requestDto.getMessage())
         .requestedAt(now)
-        .numTries(0)
+        .numAttempts(0)
         .build();
 
     return sendEmailRequestRepo.save(request);
   }
-  public void incrementNumTries(SendEmailRequest request) {
-    request.setNumTries(request.getNumTries() + 1);
+  public void incrementNumAttempts(SendEmailRequest request) {
+    request.setNumAttempts(request.getNumAttempts() + 1);
     sendEmailRequestRepo.save(request);
   }
 }

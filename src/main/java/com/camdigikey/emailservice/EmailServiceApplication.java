@@ -14,12 +14,11 @@ public class EmailServiceApplication {
 		SpringApplication.run(EmailServiceApplication.class, args);
 	}
 
-	@Bean
-	@Profile("!test")
-	CommandLineRunner commandLineRunner(SendEmailProducer sendEmailProducer) {
-		return args -> {
-			sendEmailProducer.sendEmail("alice@example.com", "bob@example.com", "Test", "testing!");
-		};
-	}
-
+//	@Bean
+//	@Profile("!test")
+//	CommandLineRunner commandLineRunner(SendEmailProducer sendEmailProducer) {
+//		return args -> {
+//			sendEmailProducer.sendEmail("alice@example.com", "bob@example.com", "Test", "testing!");
+//		};
+//	}
 }

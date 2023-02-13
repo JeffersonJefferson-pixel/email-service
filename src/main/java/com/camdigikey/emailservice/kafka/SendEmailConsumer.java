@@ -8,6 +8,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.retry.support.RetryTemplate;
@@ -26,6 +27,7 @@ import java.io.StringWriter;
 import java.util.concurrent.CountDownLatch;
 
 @Component
+@RefreshScope
 @Slf4j
 public class SendEmailConsumer {
 

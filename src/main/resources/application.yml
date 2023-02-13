@@ -41,8 +41,12 @@ management:
       exposure:
         include:
           - prometheus
+          - refresh
 
 spring:
+  application:
+    name: ${APP_NAME:email-service}
+
   datasource:
     url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5432/email-service}
     username: ${SPRING_DATASOURCE_USERNAME:postgres}
@@ -92,8 +96,11 @@ spring:
       mail:
         from: ${SENDGRID_MAIL_FROM:abc}
 
+  config:
+    import: optional:configserver:http://localhost:8888
+
 mail:
-  provider: ${MAIL_PROVIDER:mailgun}
+  provider: ${MAIL_PROVIDER:mailgun-smtp}
   from:
     name: ${MAIL_FROM_NAME:abc}
 

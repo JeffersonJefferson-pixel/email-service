@@ -28,7 +28,7 @@ public class MailgunSmtpService extends AbstractEmailService {
 
   @Override
   public void sendEmail(final SendEmailRequest request) throws  EmailException {
-    log.debug("Sending email via email with Mailgun");
+    log.debug("Sending email with Mailgun Smtp");
 
     try {
       final MimeMessage mimeMessage = this.mailSender.createMimeMessage();

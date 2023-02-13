@@ -1,11 +1,13 @@
 package com.camdigikey.emailservice;
 
+import com.camdigikey.emailservice.dto.SendEmailRequestDto;
 import com.camdigikey.emailservice.email.IEmailService;
 import com.camdigikey.emailservice.exception.EmailException;
 import com.camdigikey.emailservice.kafka.SendEmailConsumer;
 import com.camdigikey.emailservice.kafka.SendEmailProducer;
 import com.camdigikey.emailservice.model.SendEmailRequest;
 
+import org.apache.kafka.common.network.Send;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -55,7 +57,14 @@ public class KafkaUnitTest {
   public void givenEmbeddedKafkaBroker_whenProduceSendEmail_thenConsumeSendEmail() throws InterruptedException, EmailException {
     doNothing().when(emailSvc).sendEmail(any(SendEmailRequest.class));
 
-    sendEmailProducer.sendEmail("alice@example.com", "bob@example.com", "Test", "testing!");
+    SendEmailRequestDto requestDto = SendEmailRequestDto.builder()
+        .sender("alice@example.com")
+        .receiver("bob@example.com")
+        .subject("Test")
+        .message("testing!")
+        .build();
+
+    sendEmailProducer.sendEmail(requestDto);
 
     boolean messageConsumed =
         sendEmailConsumer.getLatch().await(10, TimeUnit.SECONDS);

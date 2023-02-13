@@ -20,7 +20,7 @@ public class SendgridService extends AbstractEmailService {
   private SendgridConfig sendgridConfig;
 
   public void sendEmail(final SendEmailRequest request) throws EmailException {
-    log.debug("Sending email via email with Sendgrid");
+    log.debug("Sending email with Sendgrid");
 
     try {
       Email from = new Email(sendgridConfig.getSendGridMailFrom());

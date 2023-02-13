@@ -53,7 +53,7 @@ public class SendEmailRetryUnitTest {
       request = sendEmailReqSvc.sendEmailWithRetry(request);
       fail();
     } catch (EmailException e) {
-      assertEquals(3, request.getNumTries());
+      assertEquals(3, request.getNumAttempts());
     }
   }
 
@@ -71,6 +71,6 @@ public class SendEmailRetryUnitTest {
     SendEmailRequest request = sendEmailReqSvc.saveRequest(requestDto);
     request = sendEmailReqSvc.sendEmailWithRetry(request);
 
-    assertEquals(1, request.getNumTries());
+    assertEquals(1, request.getNumAttempts());
   }
 }

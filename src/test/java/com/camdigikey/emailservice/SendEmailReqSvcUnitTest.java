@@ -48,14 +48,14 @@ public class SendEmailReqSvcUnitTest {
 
     SendEmailRequest request =  sendEmailReqSvc.saveRequest(requestDto);
     SendEmailRequest foundReq0 = sendEmailReqRepo.findById(request.getId()).orElseThrow();
-    assertEquals(0, foundReq0.getNumTries());
+    assertEquals(0, foundReq0.getNumAttempts());
 
-    sendEmailReqSvc.incrementNumTries(request);
+    sendEmailReqSvc.incrementNumAttempts(request);
     SendEmailRequest foundReq1 = sendEmailReqRepo.findById(request.getId()).orElseThrow();
-    assertEquals(1, foundReq1.getNumTries());
+    assertEquals(1, foundReq1.getNumAttempts());
 
-    sendEmailReqSvc.incrementNumTries(request);
+    sendEmailReqSvc.incrementNumAttempts(request);
     SendEmailRequest foundReq2 = sendEmailReqRepo.findById(request.getId()).orElseThrow();
-    assertEquals(2, foundReq2.getNumTries());
+    assertEquals(2, foundReq2.getNumAttempts());
   }
 }

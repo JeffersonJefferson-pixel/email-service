@@ -21,7 +21,7 @@ public class MailgunApiService extends AbstractEmailService {
   private MailgunConfig mailgunConfig;
 
   public void sendEmail(final SendEmailRequest request) throws EmailException {
-    log.debug("Sending email via email with Mailgun API");
+    log.debug("Sending email with Mailgun API");
 
     try {
       HttpResponse<String> response = postRequest(request, request.getMessage());

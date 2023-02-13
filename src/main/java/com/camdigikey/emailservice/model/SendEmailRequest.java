@@ -30,5 +30,5 @@ public class SendEmailRequest {
   private LocalDateTime requestedAt;
   private String subject;
   private String message;
-  private int numTries;
+  private int numAttempts;
 }

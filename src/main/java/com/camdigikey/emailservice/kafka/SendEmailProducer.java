@@ -4,6 +4,8 @@ import com.camdigikey.emailservice.SendEmailMessage;
 import com.camdigikey.emailservice.GenericReply;
 
 import com.camdigikey.emailservice.SendEmailReply;
+import com.camdigikey.emailservice.dto.SendEmailRequestDto;
+import com.camdigikey.emailservice.mapper.MapStructMapper;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,25 +25,24 @@ public class SendEmailProducer {
 
   private KafkaTemplate genericKafkaTemplate;
 
+  private MapStructMapper mapper;
   @Getter
   private CountDownLatch latch;
 
+
+
   @Autowired
-  public SendEmailProducer(KafkaTemplate genericKafkaTemplate) {
+  public SendEmailProducer(KafkaTemplate genericKafkaTemplate, MapStructMapper mapper) {
     this.genericKafkaTemplate = genericKafkaTemplate;
+    this.mapper = mapper;
     this.latch = new CountDownLatch(1);
   }
 
-  public void sendEmail(String sender, String receiver, String subject, String message) {
+  public void sendEmail(SendEmailRequestDto requestDto) {
     log.info("producing send-email request to {}", topic);
-    SendEmailMessage sendEmailMessage = SendEmailMessage.newBuilder()
-        .setSender(sender)
-        .setReceiver(receiver)
-        .setSubject(subject)
-        .setMessage(message)
-        .build();
+    SendEmailMessage sendEmailMsg = mapper.sendEmailReqToSendEmailMsg(requestDto);
 
-    genericKafkaTemplate.send(topic, sendEmailMessage);
+    genericKafkaTemplate.send(topic, sendEmailMsg);
   }
 
   @KafkaListener(
